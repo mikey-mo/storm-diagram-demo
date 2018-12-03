@@ -29,6 +29,10 @@ class App extends Component {
     this.engine.setDiagramModel(model);
   }
 
+  deleteNodeFromDiagram() {
+
+  }
+
   render() {
     return (
       <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -42,9 +46,7 @@ class App extends Component {
           className="diagram-layer"
           style={{ margin: '0 20px', width: '80%', backgroundColor: 'lightpink', borderRadius: '10px' }}
 					onDrop={event => {
-            console.log(this.engine.getDiagramModel());
 						var data = JSON.parse(event.dataTransfer.getData('storm-diagram-node'));
-						var nodesCount = Lodash.keys(this.engine.getDiagramModel().getNodes()).length;
             var node = null;
 						if (data.type === 'Workflow') {
 							node = new DefaultNodeModel(data.type, 'lightcoral');
@@ -52,16 +54,21 @@ class App extends Component {
 						} else if (data.type === 'Steps') {
 							node = new DefaultNodeModel(data.type, 'lightcyan');
               node.addPort(new DefaultPortModel(false, 'out-1', 'name'));
-						}
-						var points = this.engine.getRelativeMousePoint(event);
+            }
+            console.log(node);
+            var points = this.engine.getRelativeMousePoint(event);
+            points.x = Math.round(points.x / 20) * 20;
+            points.y = Math.round(points.y / 20) * 20;
+            const nodesCount = Lodash.keys(this.engine.getDiagramModel().getNodes()).length;
+            console.log(nodesCount);
 						node.x = points.x;
-						node.y = points.y;
+            node.y = points.y;
 						this.engine.getDiagramModel().addNode(node);
 						this.forceUpdate();
 					}}
 					onDragOver={event => {
 						event.preventDefault();
-					}}
+          }}
 				>
 				  <DiagramWidget diagramEngine={this.engine} />
         </div>
