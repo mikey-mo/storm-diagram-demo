@@ -14,24 +14,51 @@ import './App.scss';
 
 import BucketWidget from './Components/Bucket/BucketWidget';
 import BucketItemWidget from './Components/Bucket/BucketItemWidget';
-import BlockNodeFactory from './Components/Block/BlockNodeFactory';
+
+import { DiamondNodeModel } from "./Components/Diamond/DiamondNodeModel.jsx";
+import { DiamondNodeFactory } from "./Components/Diamond/DiamondNodeFactory.jsx";
+import { SimplePortFactory } from "./Components/Diamond/SimplePortFactory.jsx";
+import { DiamondPortModel } from "./Components/Diamond/DiamondPortModel.jsx";
 
 class App extends Component {
   componentWillMount() {
     this.engine = new DiagramEngine();
     this.engine.registerNodeFactory(new DefaultNodeFactory());
     this.engine.registerLinkFactory(new DefaultLinkFactory());
+    this.engine.registerPortFactory(new SimplePortFactory("diamond", config => new DiamondPortModel()));
+    this.engine.registerNodeFactory(new DiamondNodeFactory());
 
     const model = new DiagramModel();
 
     model.setGridSize(20);
 
     this.engine.setDiagramModel(model);
-    console.log(this.engine.getDiagramModel());
   }
 
-  deleteNodeFromDiagram() {
+  handleOnDrop = (event) => {
+    var data = JSON.parse(event.dataTransfer.getData('storm-diagram-node'));
+    var node = null;
+    if (data.type === 'Workflow') {
+      node = new DefaultNodeModel(data.type, 'lightcoral');
+      node.addPort(new DefaultPortModel(true, 'in-1', 'workflow'));
+    } else if (data.type === 'Steps') {
+      node = new DefaultNodeModel(data.type, 'lightcyan');
+      node.addPort(new DefaultPortModel(false, 'out-1', 'steps'));
+    } else if (data.type === 'Conditionals') {
+      node = new DiamondNodeModel();
+    }
 
+    var points = this.engine.getRelativeMousePoint(event);
+    points.x = Math.round(points.x / 20) * 20;
+    points.y = Math.round(points.y / 20) * 20;
+    node.setPosition(points.xy, points.y);
+    // this.model.addAll(node);
+    
+    // const nodesCount = Lodash.keys(this.engine.getDiagramModel().getNodes()).length;
+    // node.x = points.x;
+    // node.y = points.y;
+    // this.engine.getDiagramModel().addNode(node);
+    this.forceUpdate();
   }
 
   render() {
@@ -47,31 +74,8 @@ class App extends Component {
         <div
           className="diagram-layer"
           style={{ margin: '0 20px', width: '80%', backgroundColor: 'lightpink', borderRadius: '10px' }}
-					onDrop={event => {
-						var data = JSON.parse(event.dataTransfer.getData('storm-diagram-node'));
-            var node = null;
-						if (data.type === 'Workflow') {
-							node = new DefaultNodeModel(data.type, 'lightcoral');
-							node.addPort(new DefaultPortModel(true, 'in-1', 'tim'));
-						} else if (data.type === 'Steps') {
-							node = new DefaultNodeModel(data.type, 'lightcyan');
-              node.addPort(new DefaultPortModel(false, 'out-1', 'name'));
-            } else if (data.type === 'Conditionals') {
-              node = new DefaultNodeModel(data.type, 'lightpink');
-              node.addPort(new DefaultPortModel(true, 'in-1', 'conditionals'));
-            }
-            console.log(node);
-            var points = this.engine.getRelativeMousePoint(event);
-            points.x = Math.round(points.x / 20) * 20;
-            points.y = Math.round(points.y / 20) * 20;
-            const nodesCount = Lodash.keys(this.engine.getDiagramModel().getNodes()).length;
-
-						node.x = points.x;
-            node.y = points.y;
-						this.engine.getDiagramModel().addNode(node);
-						this.forceUpdate();
-					}}
-					onDragOver={event => {
+					onDrop={ event => this.handleOnDrop(event) }
+					onDragOver={ event => {
 						event.preventDefault();
           }}
 				>
@@ -81,4 +85,5 @@ class App extends Component {
     );
   }
 }
+
 export default App;
