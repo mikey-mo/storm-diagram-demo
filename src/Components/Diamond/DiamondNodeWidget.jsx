@@ -10,10 +10,6 @@ export interface DiamonNodeWidgetProps {
 export interface DiamonNodeWidgetState {}
 
 export class DiamonNodeWidget extends React.Component<DiamonNodeWidgetProps, DiamonNodeWidgetState> {
-	defaultProps: DiamonNodeWidgetProps = {
-		size: 150,
-		node: null
-	};
 
 	constructor(props: DiamonNodeWidgetProps) {
 		super(props);
@@ -21,19 +17,19 @@ export class DiamonNodeWidget extends React.Component<DiamonNodeWidgetProps, Dia
 	}
 
 	render() {
-    console.log(this);
+		console.log(this.props);
 		return (
 			<div
 				className={"diamond-node"}
 				style={{
 					position: "relative",
-					width: this.props.size,
-					height: this.props.size
+					width: 100,
+					height: 100
 				}}
 			>
 				<svg
-					width={this.props.size}
-					height={this.props.size}
+					width={100}
+					height={100}
 					dangerouslySetInnerHTML={{
 						__html:
 							`
@@ -41,17 +37,17 @@ export class DiamonNodeWidget extends React.Component<DiamonNodeWidgetProps, Dia
           </g>
           <g id="Layer_2">
             <polygon fill="purple" stroke="#000000" stroke-width="3" stroke-miterlimit="10" points="10,` +
-							this.props.size / 2 +
+							100 / 2 +
 							` ` +
-							this.props.size / 2 +
+							100 / 2 +
 							`,10 ` +
-							(this.props.size - 10) +
+							(100 - 10) +
 							`,` +
-							this.props.size / 2 +
+							100 / 2 +
 							` ` +
-							this.props.size / 2 +
+							100 / 2 +
 							`,` +
-							(this.props.size - 10) +
+							(100 - 10) +
 							` "/>
           </g>
         `
@@ -61,7 +57,7 @@ export class DiamonNodeWidget extends React.Component<DiamonNodeWidgetProps, Dia
 					style={{
 						position: "absolute",
 						zIndex: 10,
-						top: this.props.size / 2 - 8,
+						top: 100 / 2 - 8,
 						left: -8
 					}}
 				>
@@ -71,7 +67,7 @@ export class DiamonNodeWidget extends React.Component<DiamonNodeWidgetProps, Dia
 					style={{
 						position: "absolute",
 						zIndex: 10,
-						left: this.props.size / 2 - 8,
+						left: 100 / 2 - 8,
 						top: -8
 					}}
 				>
@@ -81,8 +77,8 @@ export class DiamonNodeWidget extends React.Component<DiamonNodeWidgetProps, Dia
 					style={{
 						position: "absolute",
 						zIndex: 10,
-						left: this.props.size - 8,
-						top: this.props.size / 2 - 8
+						left: 100 - 8,
+						top: 100 / 2 - 8
 					}}
 				>
 					<PortWidget name="right" node={this.props.node} />
@@ -91,8 +87,8 @@ export class DiamonNodeWidget extends React.Component<DiamonNodeWidgetProps, Dia
 					style={{
 						position: "absolute",
 						zIndex: 10,
-						left: this.props.size / 2 - 8,
-						top: this.props.size - 8
+						left: 100 / 2 - 8,
+						top: 100 - 8
 					}}
 				>
 					<PortWidget name="bottom" node={this.props.node} />
