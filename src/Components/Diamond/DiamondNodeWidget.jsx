@@ -17,7 +17,6 @@ export class DiamonNodeWidget extends React.Component<DiamonNodeWidgetProps, Dia
 	}
 
 	render() {
-		console.log(this.props);
 		return (
 			<div
 				className={"diamond-node"}
@@ -27,32 +26,8 @@ export class DiamonNodeWidget extends React.Component<DiamonNodeWidgetProps, Dia
 					height: 100
 				}}
 			>
-				<svg
-					width={100}
-					height={100}
-					dangerouslySetInnerHTML={{
-						__html:
-							`
-          <g id="Layer_1">
-          </g>
-          <g id="Layer_2">
-            <polygon fill="purple" stroke="#000000" stroke-width="3" stroke-miterlimit="10" points="10,` +
-							100 / 2 +
-							` ` +
-							100 / 2 +
-							`,10 ` +
-							(100 - 10) +
-							`,` +
-							100 / 2 +
-							` ` +
-							100 / 2 +
-							`,` +
-							(100 - 10) +
-							` "/>
-          </g>
-        `
-					}}
-				/>
+			<div style={{ height: '100px', width: '100px', backgroundColor: 'lightblue' }}>
+			</div>
 				<div
 					style={{
 						position: "absolute",
@@ -83,7 +58,7 @@ export class DiamonNodeWidget extends React.Component<DiamonNodeWidgetProps, Dia
 				>
 					<PortWidget name="right" node={this.props.node} />
 				</div>
-				<div
+				{/* <div
 					style={{
 						position: "absolute",
 						zIndex: 10,
@@ -92,7 +67,7 @@ export class DiamonNodeWidget extends React.Component<DiamonNodeWidgetProps, Dia
 					}}
 				>
 					<PortWidget name="bottom" node={this.props.node} />
-				</div>
+				</div> */}
 			</div>
 		);
 	}
