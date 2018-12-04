@@ -8,7 +8,7 @@ export default class BucketItemWidget extends React.Component {
 
   render() {
     return (
-      <div style={{ background: this.props.color, cursor: 'pointer', margin: '5px', paddingLeft: '15px', borderRadius: '10px' }}
+      <div style={{ background: this.props.color, cursor: 'pointer', margin: '5px', paddingLeft: '15px', borderRadius: '10px', fontSize: '25px' }}
         onDragStart={event => {
           event.dataTransfer.setData('storm-diagram-node', JSON.stringify(this.props.model));
         }}

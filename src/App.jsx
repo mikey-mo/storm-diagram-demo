@@ -27,6 +27,7 @@ class App extends Component {
     model.setGridSize(20);
 
     this.engine.setDiagramModel(model);
+    console.log(this.engine.getDiagramModel());
   }
 
   deleteNodeFromDiagram() {
@@ -40,6 +41,7 @@ class App extends Component {
           <BucketWidget>
             <BucketItemWidget model={{type: 'Workflow'}} name={'Workflow'} color={'lightcoral'} />
             <BucketItemWidget model={{type: 'Steps'}} name={'Steps'} color={'lightcyan'} />
+            <BucketItemWidget model={{type: 'Conditionals'}} name={'Conditionals'} color={'lightpink'} />
           </BucketWidget>
         </div>
         <div
@@ -54,13 +56,16 @@ class App extends Component {
 						} else if (data.type === 'Steps') {
 							node = new DefaultNodeModel(data.type, 'lightcyan');
               node.addPort(new DefaultPortModel(false, 'out-1', 'name'));
+            } else if (data.type === 'Conditionals') {
+              node = new DefaultNodeModel(data.type, 'lightpink');
+              node.addPort(new DefaultPortModel(true, 'in-1', 'conditionals'));
             }
             console.log(node);
             var points = this.engine.getRelativeMousePoint(event);
             points.x = Math.round(points.x / 20) * 20;
             points.y = Math.round(points.y / 20) * 20;
             const nodesCount = Lodash.keys(this.engine.getDiagramModel().getNodes()).length;
-            console.log(nodesCount);
+
 						node.x = points.x;
             node.y = points.y;
 						this.engine.getDiagramModel().addNode(node);
